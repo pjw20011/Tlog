@@ -59,7 +59,7 @@
 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Django, SQLite3
-- **크롤링 및 전처리**: NLTK, RegEx(re), JSON ,Gensim(텍스트 요약약)
+- **크롤링 및 전처리**: NLTK, RegEx(re), JSON ,Gensim(텍스트 요약)
 - **데이터 시각화**: Matplotlib, WordCloud
 - **이미지 처리**: PIL (Pillow), NumPy
 - **기타 도구**: Visual Studio Code
