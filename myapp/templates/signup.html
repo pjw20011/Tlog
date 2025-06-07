@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'myapp/signup.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'myapp/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Vina+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>T-log</h1>
+    </header>
+
+    <div id="signup-container">
+        <div id ='signup-form'>
+            <form id="userForm">
+                <label for="name">이름:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="username">아이디:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">패스워드:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="passwordck">패스워드 확인:</label>
+                <input type="password" id="passwordck" name="passwordck" required>
+
+                <label for="birthdate">생년월일:</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+
+                <button type="button" onclick="submitForm()">가입하기</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function submitForm() {
+            var name = document.getElementById('name').value;
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+            var passwordck = document.getElementById('passwordck').value;
+            var birthdate = document.getElementById('birthdate').value;
+
+            // Ajax를 사용하여 서버에 요청을 보냅니다.
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "{% url 'myapp:signup' %}", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xhr.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    // 서버로부터 정상적인 응답을 받았을 때, 페이지를 login.html로 이동합니다.
+                    window.location.href = "{% url 'myapp:login' %}";
+                } else if (this.readyState === 4) {
+                    // 오류가 발생했을 때, 오류 메시지를 표시합니다.
+                    alert('Signup failed: ' + this.responseText);
+                }
+            };
+            var data = JSON.stringify({
+                "name": name,
+                "username": username,
+                "password": password,
+                "passwordck": passwordck,
+                "birthdate": birthdate
+            });
+            xhr.send(data);
+    
+            // form의 서브미션을 방지합니다.
+            return false;
+
+        }
+    </script>
+</body>
+</html>

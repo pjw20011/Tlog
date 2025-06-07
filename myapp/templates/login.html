@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <!-- 문자 인코딩 및 뷰포트 설정, 제목, 스타일시트 및 폰트 링크 -->
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="{% static 'myapp/login.css' %}">
+     <link rel="shortcut icon" type="image/x-icon" href="{% static 'myapp/favicon.ico' %}">
+     <link href="https://fonts.googleapis.com/css2?family=Vina+Sans:wght@400;700&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+     <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ </head>
+
+<body>
+    <header>
+        <h1>T-log</h1>
+    </header>
+    <div id="login-container">
+        <div id="login-form">
+            ID<input type="text" id="username" placeholder="아이디" name="username">
+            <br>
+            password<input type="password" id="password" placeholder="비밀번호" name="password">
+            <br>
+            <button id="login-button">로그인</button> <button id="signup-button">회원가입</button>
+            <br>
+        </div>
+    </div>
+
+    <script>
+         // 로그인 버튼 클릭 시 동작
+         $("#login-button").on("click", function () {
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var csrf_token = '{{ csrf_token }}';
+
+            // Ajax를 사용하여 서버에 로그인 요청을 보냅니다.
+            $.ajax({
+                url: "{% url 'myapp:login' %}",
+                type: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                    csrfmiddlewaretoken: csrf_token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        alert("로그인 성공");
+                        window.location.href = "{% url 'myapp:home2_page' %}";
+                    } else {
+                        alert("로그인 실패: " + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("로그인 요청 실패: " + error);
+                }
+            });
+        });
+
+        // 회원가입 버튼 클릭 시 동작
+        $("#signup-button").on("click", function () {
+            window.location.href = "/signup/";
+
+        });
+    </script>
+</body>
+
+</html>

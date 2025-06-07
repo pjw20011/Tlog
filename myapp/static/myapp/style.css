@@ -1,0 +1,132 @@
+/* myapp/static/myapp/style.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #ffffff;  /* 웹페이지 전체 배경색 */
+}
+
+header {
+    background-color: #ffffff;
+    color: #ff9933;
+    padding: 1em 0;
+    text-align: center;  /* 변경: 헤더의 텍스트를 중앙으로 정렬 */
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black,
+                 -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black; /* 변경 */
+}
+
+header h1 {
+    margin: 0;
+    font-family: 'Vina Sans', sans-serif;  /* 변경: 폰트를 Arial로 변경 */
+    margin-left: 20px;
+    font-size: 2em;
+}
+.header-buttons {
+    display: flex;
+    gap: 1em; /* 버튼 간 간격 설정 */
+    margin-left: 30px;
+}
+
+.header-buttons button {
+    /* 버튼 스타일 설정 */
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    background-color: #ff9933;
+    color: #fff;
+    cursor: pointer;
+}
+
+.header-buttons button:hover {
+    background-color: #cc7a29;
+}
+
+#welcome-message {
+    position: fixed;
+    top: 15px;
+    left: 85px; 
+    transform: translateX(-50%);
+    width: calc(100% - 700px);
+    height: 30px;
+    text-align: center;
+    font-size: 1.0em;
+    z-index: 998;
+    border: none;
+    background-color: white;
+    padding: 0;
+    margin-bottom: 0;
+  }
+  
+.category-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    background-color: #ffffff;  /* 변경: 배경색을 흰색으로 변경 */
+    border-top: 1px solid #CCC;  /* 추가: 위쪽 테두리 추가 */
+    border-bottom: 1px solid #CCC;  /* 추가: 아래쪽 테두리 추가 */
+}
+
+.category-button {
+    font-family: 'Black Han Sans', sans-serif;
+    background-color: #ffffff;  /* 변경: 버튼의 배경색을 연한 회색으로 변경 */
+    border: none;
+    color: #000000;  /* 변경: 버튼의 텍스트 색상을 검은색으로 변경 */
+    padding: px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category-button:hover {
+    background-color: #e6e6e6;  /* 변경: 마우스 오버 시 버튼의 배경색을 더 연한 회색으로 변경 */
+}
+
+.category-button.active {
+    text-decoration: underline;
+    color: rgb(245, 118, 34);
+}
+
+.graph-container {
+    overflow: auto;
+    height: auto;
+    padding: 20px 0;
+    text-align: center;  /* 추가: 내용을 가운데 정렬 */
+    border-top: 1px solid #CCC;  /* 추가: 위쪽 테두리 추가 */
+    border-bottom: 2px solid #CCC;  /* 추가: 아래쪽 테두리 추가 */
+    background-color: #f2f2f2;
+    margin:auto;
+    padding: 0 150px; 
+}
+
+.category-pair {
+    display: flex;
+    justify-content: center;  /* 추가: 내용을 가운데 정렬 */
+    align-items: center;  /* 추가: 내용을 가운데 정렬 */
+}
+
+.graph-container .graph-image {
+    max-width: 100%;
+    height: auto;
+    display: none;
+    margin: auto;  /* 추가: 내용을 가운데 정렬 */
+    border: 5px solid hsl(30, 94%, 69%);  /* 박스 추가 */
+    margin-top: 20px;
+    margin-bottom:20px;
+}
+
+footer {
+    background-color: #fdfdfd;
+    color: #000000;
+    padding: 1em 0;
+    text-align: center;
+    border-top: 1px solid #ccc;
+}
+.data-container {
+    padding: 0 100px;  /* 상하 0px, 좌우 20px 패딩 적용 */
+    background-color: #ffffff;
+}

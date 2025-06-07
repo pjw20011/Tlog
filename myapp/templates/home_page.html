@@ -1,0 +1,178 @@
+{% load static %}
+{% load myapp_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- 문자 인코딩 및 뷰포트 설정, 제목, 스타일시트 및 폰트 링크 -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-log - Your Blog</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'myapp/style.css' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'myapp/favicon.ico' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Vina+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header>
+        <!-- 블로그 제목 -->
+        <h1>T-log</h1>
+        <div class="header-buttons">
+            <button id="login-button">로그인</button>
+            <button id="signup-button">회원가입</button>
+        </div>
+    </header>
+
+    <section class="main-content">
+        <div class="container">
+            <div class="category-container">
+                <!-- 카테고리 버튼: 라이프, 여행, 문화, IT, 스포츠, 시사 -->
+                <button type="button" class="category-button" data-graph="life_graph">라이프</button>
+                <button type="button" class="category-button" data-graph="travel_graph">여행</button>
+                <button type="button" class="category-button" data-graph="culture_graph">문화</button>
+                <button type="button" class="category-button" data-graph="IT_graph">IT</button>
+                <button type="button" class="category-button" data-graph="sports_graph">스포츠</button>
+                <button type="button" class="category-button" data-graph="current_graph">시사</button>
+            </div>
+            <div class="graph-container">
+                <div class="category-pair" id="life_pair">
+                    <img src="{% url 'life_graph' %}" alt="Life Graph" id="life_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_life' %}" alt="Word Cloud" id='life_wordcloud' class="graph-image">
+                </div>
+            
+                <div class="category-pair" id="travel_pair">
+                    <img src="{% url 'travel_graph' %}" alt="Travel Graph" id="travel_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_travel' %}" alt="Word Cloud" id='travel_wordcloud' class="graph-image">
+                </div>
+            
+                <div class="category-pair" id="culture_pair">
+                    <img src="{% url 'culture_graph' %}" alt="Culture Graph" id="culture_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_culture' %}" alt="Word Cloud" id='culture_wordcloud' class="graph-image">
+                </div>
+            
+                <div class="category-pair" id="IT_pair">
+                    <img src="{% url 'IT_graph' %}" alt="IT Graph" id="IT_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_IT' %}" alt="Word Cloud" id='IT_wordcloud' class="graph-image">
+                </div>
+            
+                <div class="category-pair" id="sports_pair">
+                    <img src="{% url 'sports_graph' %}" alt="Sports Graph" id="sports_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_sports' %}" alt="Word Cloud" id='sports_wordcloud' class="graph-image">
+                </div>
+            
+                <div class="category-pair" id="current_pair">
+                    <img src="{% url 'current_graph' %}" alt="Current Graph" id="current_graph" class="graph-image">
+                    <img src="{% url 'wordcloud_current' %}" alt="Word Cloud" id='current_wordcloud' class="graph-image">
+                </div>
+            </div>
+            <div class="data-container">
+                <!-- Ajax로 받은 데이터가 들어갈 공간 -->
+            </div>
+        </div>
+    </section>
+
+
+    <footer>
+        <!-- 저작권 정보 -->
+        <p>&copy; 2023 Your Blog</p>
+    </footer>
+
+    <script>
+        function showGraph(graphId, event) {
+            // 워드 클라우드 ID는 그래프 ID에서 'graph'를 'wordcloud'로 변경하여 가정합니다.
+            var wordcloudId = graphId.replace('_graph', '_wordcloud');
+            var selectedGraph = document.getElementById(graphId);
+            var selectedWordcloud = document.getElementById(wordcloudId);
+    
+            // 모든 이미지를 숨기도록 변경
+            var images = document.querySelectorAll('.graph-image');
+            images.forEach(function (image) {
+                image.style.display = 'none';
+            });
+    
+            // 선택된 그래프와 워드클라우드만 표시
+            if (selectedGraph && selectedWordcloud) {
+                selectedGraph.style.display = 'block';
+                selectedWordcloud.style.display = 'block';
+            }
+    
+            // 모든 버튼에서 .active 클래스 제거
+            var buttons = document.querySelectorAll('.category-button');
+            buttons.forEach(function (button) {
+                button.classList.remove('active');
+            });
+    
+            // 클릭한 버튼에만 .active 클래스 추가
+            var clickedButton = event.target;
+            clickedButton.classList.add('active');
+            
+        }
+    
+        window.onload = function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                // 초기 로딩 시 이미지 숨기기
+                var images = document.querySelectorAll('.graph-image');
+                images.forEach(function (image) {
+                    image.style.display = 'none';
+                });
+            });
+    
+            document.addEventListener("click", function (event) {
+                if (event.target.classList.contains('category-button')) {
+                    var graphId = event.target.getAttribute('data-graph');
+                    showGraph(graphId, event);
+                }
+            });
+        }
+        $('.category-button').click(function() {
+            var category = $(this).text();  // 카테고리 이름 가져오기
+
+            $.ajax({
+                url: '/get_zipped_data/',    // 뷰의 URL
+                data: {
+                    'category': category      // 요청에 카테고리 이름 포함
+                },
+                dataType: 'json',
+                success: function(data) {
+                    // 서버로부터 받은 응답을 사용하여 웹 페이지 업데이트
+                    // 'data-container' 요소를 비운 후 새로운 내용 추가
+                    $('.data-container').empty();
+
+                    $.each(data, function(index, item) {
+                        var title = item[0];
+                        var link = item[1];
+                        var excerpt = item[2];
+                        var author = item[3];
+                        var subtopic =item[4];
+
+                        var new_content = '<div style="text-align: left;">'
+                            + '<h2>' + title + '</h2>'
+                            + '<p>' + excerpt + '</p>'
+                            + '<p>Author: ' + author + '</p>'
+                            + '<p>subtopic: '+subtopic+'</p>'
+                            + '<div style="text-align: right;">'
+                                + '<button onclick="location.href=\'' + link + '\'" type="button" style="background-color: #ff9933; color: #ffffff; border-color: #ffffff;">Go to Link</button>'
+                                + '</div>'
+                            +'<hr>';
+                        $('.data-container').append(new_content);
+                    });
+                }
+            });
+        });
+        $("#login-button").on("click", function () {
+            // 로그인 페이지로 이동 또는 로그인 모달 띄우기
+            window.location.href = "/login/";
+        });
+
+        $("#signup-button").on("click", function () {
+            // 회원가입 페이지로 이동 또는 회원가입 모달 띄우기
+            window.location.href = "/signup/";
+        });
+    </script>
+</body>
+</html>
